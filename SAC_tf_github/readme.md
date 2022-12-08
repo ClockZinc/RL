@@ -35,4 +35,7 @@ python SAC_V0 --train --load
 ```
 
 ## Results
+tensorboard --logdir="model_SAC_V0_bw3_v1"
+open the host that below, like:
 ![open the tensorboardX](./pic/1.png)
+![open the tensorboardX](./pic/2.png)
