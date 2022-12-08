@@ -13,7 +13,7 @@ pip install gym[classic_control]
 pip install gym[gym]
 ```
 
-## test using the pre-train Model
+## test using the pre-train Model(Results)
 ```python
 python SAC_V0_bw3_v1 --test
 python SAC_V0_bw3 --test
@@ -34,4 +34,5 @@ python SAC_V0_bw3 --train --load
 python SAC_V0 --train --load
 ```
 
-## 
+## Results
+![open the tensorboardX]("./pic/1.png")
