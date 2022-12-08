@@ -35,4 +35,4 @@ python SAC_V0 --train --load
 ```
 
 ## Results
-![open the tensorboardX]("./pic/Result.png")
+![open the tensorboardX]("pic/Result.png")
