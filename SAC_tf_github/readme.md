@@ -48,4 +48,4 @@ tensorboard --logdir="./"
 open the host that below, like:
 ![open the tensorboardX](./pic/1.png)
 ![open the tensorboardX](./pic/Reward.svg)
-[video result](./model_SAC_V0_bw3/video/BipedalWalker-v392139.mp4)
+[video result](https://www.bilibili.com/video/BV1xM411z7PC/)
