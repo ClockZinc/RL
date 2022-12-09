@@ -1,4 +1,5 @@
 ## requirements:
+specially for hardcore version
 ### Computer environment
 ```
 Anaconda
