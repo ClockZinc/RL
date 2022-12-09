@@ -207,6 +207,6 @@ if args.test:
 if args.video:
     logging.getLogger().setLevel(logging.ERROR)
     sac.load_ckpt()
-    filename = sac.model_name+"/video"
+    filename = "./video"
     video_name = ENV_NAME+sac.now_time+".mp4"
     create_video(filename, video_name, env, actor=sac.choose_action_test, fps=env.metadata["render_fps"])

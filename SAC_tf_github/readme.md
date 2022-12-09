@@ -44,7 +44,7 @@ python SAC_V0_bw3 --video
 to save the video in the ./model_SAC_V0_bw3/video/
 
 ## Results
-tensorboard --logdir="model_SAC_V0_bw3_v1"
+tensorboard --logdir="./"
 open the host that below, like:
 ![open the tensorboardX](./pic/1.png)
 ![open the tensorboardX](./pic/Reward.svg)
