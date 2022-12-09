@@ -1,7 +1,7 @@
 # import tensorflow as tf
 import numpy as np
 import random
-import time,multiprocessing,os
+import time,multiprocessing,os,imageio
 
 PI = np.pi
 class ema_V2(object):
@@ -117,3 +117,24 @@ def PrintProgressBAR_V0(t1,i,MAX_EPISODES,ep_reward):
         )
     )
 
+
+
+def create_video(filename,video_name,env, actor, fps=30,max_step=10000):
+    if not os.path.exists(filename):
+        os.makedirs(filename)
+    filename+="/"+video_name
+    with imageio.get_writer(filename, fps=fps) as video:
+        done = False
+        state = env.reset()
+        frame = env.render(mode="rgb_array")
+        video.append_data(frame)
+        while not done:    
+            state = np.expand_dims(state, axis=0)
+            action = actor(state)[0]
+            state, _, done, _ = env.step(action)
+            frame = env.render(mode="rgb_array")
+            video.append_data(frame)
+            if not max_step:
+                break
+            else:
+                max_step-=1

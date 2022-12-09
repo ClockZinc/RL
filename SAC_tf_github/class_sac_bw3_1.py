@@ -106,7 +106,7 @@ class SAC(object):
             TAU=0.01,                   # soft update parameter
             POLICY_DELAY=1,
             alpha=0.2,
-            test_mode=False
+            writer_mode=True
     ):
         ##########################################################
         self.s_dim,self.a_dim,self.a_bound=s_dim,a_dim,a_bound 
@@ -124,13 +124,13 @@ class SAC(object):
         ##########################################################
         # self info
         self.model_name     ='model_'+os.path.basename(sys.argv[0]).split(".")[0]
-        if not test_mode:
-            now_time            = str(datetime.datetime.now().day)+str(datetime.datetime.now().hour)+str(datetime.datetime.now().minute)
-            self.algorithm_name ='SAC'
+        self.now_time            = str(datetime.datetime.now().day)+str(datetime.datetime.now().hour)+str(datetime.datetime.now().minute)
+        self.algorithm_name ='SAC'
 
         # 先初始化ReplayBuffer,tensorboradX.summaryWriter
         self.replay_buffer  = ReplayBuffer_V0(REPLAYBUFFER_SIZE,s_dim=s_dim,a_dim=a_dim)
-        self.writer         = SummaryWriter(self.model_name+'/tensorboard'+now_time)
+        if writer_mode:
+            self.writer         = SummaryWriter(self.model_name+'/tensorboard'+self.now_time)
 
         # some pointers
         self.pointer_update_times   =0

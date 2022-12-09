@@ -1,11 +1,11 @@
 '''
 This Version has better performance
-'''
-import time,argparse,os
+'''    
+import time,argparse,os,logging
 import gym
 import numpy as np
 import tensorflow as tf
-from myfun import PrintProgressBar_init,PrintProgressBar
+from myfun import PrintProgressBar_init,PrintProgressBar,create_video
 from class_sac_bw3_1 import SAC
 
 
@@ -14,6 +14,7 @@ parser.add_argument('-t','--train', dest='train', action='store_true', default=F
 parser.add_argument('-e','--test', dest='test', action='store_true',default=False) # 未键入--test时，args.test=Flase
 parser.add_argument('--seed',dest='seed',default=3407,type=int) # 未键入--seed 123 时，args.seed=3047
 parser.add_argument('-l','--load',dest='load',action='store_true',default=False) # 未键入--seed 123 时，args.seed=3047
+parser.add_argument('-v','--video',dest='video',action='store_true',default=True) # 未键入--seed 123 时，args.seed=3047
 args = parser.parse_args()  # 整合到args内
 
 
@@ -82,7 +83,8 @@ sac=SAC(s_dim,a_dim,a_bound,
         BATCH_SIZE=BATCH_SIZE         ,      # learn per batch size
         VAR=VAR                         ,    # variance of the action for exploration
         TAU=TAU                        ,     # soft update parameter
-        POLICY_DELAY=POLICY_DELAY)
+        POLICY_DELAY=POLICY_DELAY,
+        writer_mode=args.train)
 if args.load:
     sac.load_ckpt(mode=True)
 # 开始训练 --train
@@ -200,3 +202,11 @@ if args.test:
             s, r, done, info = env.step(sac.choose_action_test(s))
             if done:
                 break
+
+# gene video
+if args.video:
+    logging.getLogger().setLevel(logging.ERROR)
+    sac.load_ckpt()
+    filename = sac.model_name+"/video"
+    video_name = ENV_NAME+sac.now_time+".mp4"
+    create_video(filename, video_name, env, actor=sac.choose_action_test, fps=env.metadata["render_fps"])

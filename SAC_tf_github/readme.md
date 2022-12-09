@@ -11,7 +11,9 @@ conda create -n SAC python==3.8.13
 conda activate SAC
 pip install -r requirements.txt
 pip install gym[classic_control]
-pip install gym[gym]
+pip install gym[box2d]
+pip install imageio[ffmpeg]
+pip install imageio[pyav]
 ```
 
 ## test using the pre-train Model(Results)
@@ -34,6 +36,12 @@ python SAC_V0_bw3_v1 --train --load
 python SAC_V0_bw3 --train --load
 python SAC_V0 --train --load
 ```
+## save the video
+using 
+```
+python SAC_V0_bw3 --video
+```
+to save the video in the ./model_SAC_V0_bw3/video/
 
 ## Results
 tensorboard --logdir="model_SAC_V0_bw3_v1"
