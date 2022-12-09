@@ -1,3 +1,6 @@
+'''
+This Version has better performance
+'''
 import time,argparse,os
 import gym
 import numpy as np

@@ -1,6 +1,7 @@
 # env DDPG_V3
 # tf version of SAC
 # dual Q network Version
+# reward scaled
 import os,sys,time,datetime
 import tensorflow as tf
 from tensorflow.keras.layers import Dense,Input
@@ -104,7 +105,8 @@ class SAC(object):
             VAR=3,                      # variance of the action for exploration
             TAU=0.01,                   # soft update parameter
             POLICY_DELAY=1,
-            alpha=0.2
+            alpha=0.2,
+            test_mode=False
     ):
         ##########################################################
         self.s_dim,self.a_dim,self.a_bound=s_dim,a_dim,a_bound 
@@ -122,8 +124,9 @@ class SAC(object):
         ##########################################################
         # self info
         self.model_name     ='model_'+os.path.basename(sys.argv[0]).split(".")[0]
-        now_time            = str(datetime.datetime.now().day)+str(datetime.datetime.now().hour)+str(datetime.datetime.now().minute)
-        self.algorithm_name ='SAC'
+        if not test_mode:
+            now_time            = str(datetime.datetime.now().day)+str(datetime.datetime.now().hour)+str(datetime.datetime.now().minute)
+            self.algorithm_name ='SAC'
 
         # 先初始化ReplayBuffer,tensorboradX.summaryWriter
         self.replay_buffer  = ReplayBuffer_V0(REPLAYBUFFER_SIZE,s_dim=s_dim,a_dim=a_dim)
