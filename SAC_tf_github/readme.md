@@ -39,3 +39,4 @@ tensorboard --logdir="model_SAC_V0_bw3_v1"
 open the host that below, like:
 ![open the tensorboardX](./pic/1.png)
 ![open the tensorboardX](./pic/Reward.svg)
+[Video Results](https://www.bilibili.com/video/BV1HP411T7zG/)
