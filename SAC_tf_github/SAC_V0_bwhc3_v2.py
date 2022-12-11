@@ -1,5 +1,9 @@
 '''
 This Version train from ZERO
+ENV_NAME='BipedalWalker-v3'  for 500
+ENV_NAME='BipedalWalkerHardcore-v3'  for 1000
+
+
 '''    
 import time,argparse,os,logging
 import gym
@@ -28,8 +32,8 @@ LR_A=1e-3               # actor learning rate
 LR_C=1e-3              # critic learning rate
 GAMMA=0.995              # reward discount rate
 REPLAYBUFFER_SIZE=1000000# size of replay buffer
-BATCH_SIZE=128           # learn per batch size
-FULL_COE=5                # when Replaybuffer is full then the MAX_LE_STEPS *=FULL_COE
+BATCH_SIZE=256           # learn per batch size
+FULL_COE=1                # when Replaybuffer is full then the MAX_LE_STEPS *=FULL_COE
 VAR=1                   # variance of the action for exploration
 TAU=0.005                # soft update parameter 不能太小
 MAX_EPISODES=1000        # maximum exploration times(from reset() to done/max_EP_STEP)
@@ -38,7 +42,8 @@ MAX_EP_STEPS=5000        # maximum step per episode
 TEST_PER_EPISODES=10    # step that test the model
 
 POLICY_DELAY=1          # train the actor per POLICY_DELAY of update of critic
-INIT_SIZE=10000
+INIT_SIZE=min(BATCH_SIZE*MAX_LE_STEPS*2,REPLAYBUFFER_SIZE)
+# INIT_SIZE=10000
 
 
 class NormalizedActions(gym.ActionWrapper):
@@ -101,10 +106,7 @@ if args.train:
         s = env.reset()
         for init_j in range(MAX_EP_STEPS):
             # Add exploration noise
-            # a = sac.choose_action(s)       #这里很简单，直接用actor估算出a动作
-            # a = np.clip(np.random.normal(a, VAR), -MAX_YAW_CONTROL, MAX_YAW_CONTROL)  
-            a = sac.choose_action_random(s)       #这里很简单，直接用actor估算出a动作
-            # a = np.random.uniform(low=a_bound_lb,high=a_bound_ub,size=(4,))
+            a = sac.choose_action(s)       #这里很简单，直接用actor估算出a动作
             
             s_, r, done, info = env.step(a)
             sac.store_transition(s, a, r, s_,done)
@@ -133,6 +135,7 @@ if args.train:
             sac.store_transition(s, a, r, s_,done)
             if sac.pointer_store_times == REPLAYBUFFER_SIZE:
                 MAX_LE_STEPS *= FULL_COE
+                print("\n FULL_COE \n")
 
             #输出数据记录
             s = s_  
@@ -171,6 +174,12 @@ if args.train:
         ####################   SAVE   ######################
         if i and (not i % 100) : 
             sac.save_ckpt()
+            s = env.reset()
+            for i in range(MAX_EP_STEPS):
+                env.render()
+                s, r, done, info = env.step(sac.choose_action_test(s))
+                if done:
+                    break
         ####################   END   ######################
 
 

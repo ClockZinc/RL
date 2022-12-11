@@ -96,7 +96,7 @@ def PrintProgressBar(t1,i,MAX_EPISODES,ep_reward):
     hour=rest_time / 3600
     minute=rest_time % 3600 /60
     print(
-        '\rEpisode: {}/{}  | Episode Reward: {:.4f}  | Running Time: {:.4f}|est: {}h {:2.1f}min'.format(
+        '\rEpisode: {:4d}/{:4d}  | Episode Reward: {:9.4f}  | Running Time: {:2.4f}|est: {}h {:2.1f}min'.format(
             i, MAX_EPISODES, ep_reward,cost_time,np.int32(hour),minute
         ), end=''
     )
@@ -111,7 +111,7 @@ def PrintProgressBar_init(t1,k,INIT_SIZE):
 )
 def PrintProgressBAR_V0(t1,i,MAX_EPISODES,ep_reward):
     print(
-        '\rEpisode: {}/{}  | Episode Reward: {:.4f}  | Running Time: {:.4f}'.format(
+        '\rEpisode: {:4d}/{:4d}  | Episode Reward: {:9.4f}  | Running Time: {:2.4f}'.format(
             i, MAX_EPISODES, ep_reward,
             time.time() - t1
         )

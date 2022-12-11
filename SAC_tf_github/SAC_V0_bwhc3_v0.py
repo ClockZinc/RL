@@ -14,7 +14,7 @@ parser.add_argument('-t','--train', dest='train', action='store_true', default=F
 parser.add_argument('-e','--test', dest='test', action='store_true',default=False) # 未键入--test时，args.test=Flase
 parser.add_argument('--seed',dest='seed',default=3407,type=int) # 未键入--seed 123 时，args.seed=3047
 parser.add_argument('-l','--load',dest='load',action='store_true',default=False) # 未键入--seed 123 时，args.seed=3047
-parser.add_argument('-v','--video',dest='video',action='store_true',default=True) # 未键入--seed 123 时，args.seed=3047
+parser.add_argument('-v','--video',dest='video',action='store_true',default=False) # 未键入--seed 123 时，args.seed=3047
 args = parser.parse_args()  # 整合到args内
 
 
@@ -23,11 +23,12 @@ args = parser.parse_args()  # 整合到args内
 ENV_NAME='BipedalWalkerHardcore-v3'  # 环境
 RANDOMSEED=args.seed   # 随机种子
 
-LR_A=1e-3               # actor learning rate
-LR_C=1e-3               # critic learning rate
+LR_A=3e-4               # actor learning rate
+LR_C=3e-4               # critic learning rate
 GAMMA=0.995              # reward discount rate
 REPLAYBUFFER_SIZE=1000000# size of replay buffer
 BATCH_SIZE=128           # learn per batch size
+FULL_COE=5                # when Replaybuffer is full then the MAX_LE_STEPS *=FULL_COE
 VAR=1                   # variance of the action for exploration
 TAU=0.005                # soft update parameter 不能太小
 MAX_EPISODES=1000        # maximum exploration times(from reset() to done/max_EP_STEP)
@@ -129,6 +130,8 @@ if args.train:
 
             # 保存s，a，r，s_
             sac.store_transition(s, a, r, s_,done)
+            if sac.pointer_store_times == REPLAYBUFFER_SIZE:
+                MAX_LE_STEPS *= FULL_COE
 
             #输出数据记录
             s = s_  
@@ -139,10 +142,7 @@ if args.train:
         ####################   END   ####################
         # 第一次数据满了，就可以开始学习
         if sac.pointer_store_times > INIT_SIZE:
-            # if VAR>0.1:
-            #     VAR*=0.9999
-            # else:
-            #     VAR=0.1
+
             for LE_STEPS in range(MAX_LE_STEPS):    
                 sac.learn()
 
@@ -163,7 +163,7 @@ if args.train:
                 ep_reward += r
                 if j == MAX_EP_STEPS - 1 or done:
                     print(
-                        '\rEpisode: {}/{}  | Episode Reward: {:.4f}  | Running Time: {:.4f}'.format(
+                        '\rEpisode: {}/{}  | Episode Reward: {:5.4f}  | Running Time: {:.4f}'.format(
                             i, MAX_EPISODES, ep_reward,
                             time.time() - t1
                         )
