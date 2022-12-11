@@ -236,7 +236,6 @@ class SAC(object):
             target_V_value  = Q_min - log_prob*self.alpha
             V_loss          = tf.losses.mean_squared_error(V_value, target_V_value)
         V_grads = tape.gradient(V_loss, self.value.trainable_weights) # 得到偏LOSS偏omega
-        V_grads = [tf.clip_by_norm(g, 0.5) for g in V_grads]
         self.value_opt.apply_gradients(zip(V_grads, self.value.trainable_weights))# 进行一次梯度下降（目的是降低LOSS）
 
     @tf.function
@@ -248,7 +247,6 @@ class SAC(object):
             Q_min           = tf.math.minimum(Q_value_1,Q_value_2)
             Policy_loss     = tf.reduce_mean(self.alpha*log_prob-Q_min)
         Policy_grads = tape.gradient(Policy_loss, self.actor.trainable_weights) # 得到偏LOSS偏omega
-        Policy_grads = [tf.clip_by_norm(g, 0.5) for g in Policy_grads]
         self.actor_opt.apply_gradients(zip(Policy_grads, self.actor.trainable_weights))# 进行一次梯度下降（目的是降低LOSS）
 
     @tf.function
@@ -259,7 +257,6 @@ class SAC(object):
             target_Q_value= br + (1 - bd) * self.GAMMA * target_V_value
             td_error = tf.losses.mean_squared_error(Q_value, target_Q_value) # TD_error MSE(y,q)
         Q_grads = tape.gradient(td_error, self.q_value_1.trainable_weights) # 得到偏LOSS偏omega
-        Q_grads = [tf.clip_by_norm(g, 0.5) for g in Q_grads]
         self.q_value_1_opt.apply_gradients(zip(Q_grads, self.q_value_1.trainable_weights))# 进行一次梯度下降（目的是降低LOSS）
 
     @tf.function
@@ -270,7 +267,6 @@ class SAC(object):
             target_Q_value= br + (1 - bd) * self.GAMMA * target_V_value
             td_error = tf.losses.mean_squared_error(Q_value, target_Q_value) # TD_error MSE(y,q)
         Q_grads = tape.gradient(td_error, self.q_value_2.trainable_weights) # 得到偏LOSS偏omega
-        Q_grads = [tf.clip_by_norm(g, 0.5) for g in Q_grads]
         self.q_value_2_opt.apply_gradients(zip(Q_grads, self.q_value_2.trainable_weights))# 进行一次梯度下降（目的是降低LOSS）
 
     def learn(self):
