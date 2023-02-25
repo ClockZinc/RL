@@ -1,5 +1,6 @@
 '''
 主要是对比下不同网络大小下训练出来的效果
+以及时间上的不同
 '''    
 import time,argparse,os,logging
 import gym
