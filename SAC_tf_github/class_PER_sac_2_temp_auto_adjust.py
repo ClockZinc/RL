@@ -263,7 +263,7 @@ class SAC(object):
     '''
     我们actor网络的目的是学习Q网络,学得越像越好吧,但是还是改变分布了啊
     '''
-    @tf.function
+    # @tf.function
     def update_actor(self,bs,ISWeights):
         with tf.GradientTape(persistent= True) as tape:
             action, log_prob, z, mu, log_std = self.evaluation(bs)
@@ -288,7 +288,7 @@ class SAC(object):
     where 
         log_prob is the probability of the actor from the policy network
     '''
-    @tf.function
+    # @tf.function
     def update_q_value(self,bs,ba,br,bs_,bd,ISWeights):
         action_, log_prob_, z, mu, log_std = self.evaluation(bs_)
         Q_value_target_1 = self.q_value_target_1([bs_,action_])

@@ -1,0 +1,22 @@
+想要关联本地的和远程的代码
+git push -u origin <reop NAME>
+查看分支
+git branch 
+git branch -a # 所有分支 包括远程的
+选择分支
+git checkout <reop NAME>
+
+一般来说想要更新代码
+创建新branch
+git branch <new reop NAME>
+转移到该分支下
+git checkout <nrn>
+
+添加修改后的文件到库中,"."是所有的意思
+git add . 
+评论一下
+git commit -m "<your commits>"
+上传
+git push
+如果是新分支上传到云端，用一次即可
+git push -u origin <reop NAME>

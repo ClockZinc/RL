@@ -20,7 +20,7 @@ from class_PER_sac_2_temp_auto_adjust import SAC
 
 
 parser = argparse.ArgumentParser(description='Train or test neural net motor controller.')
-parser.add_argument('-t','--train', dest='train', action='store_true', default=False)    # 未键入--train时，args.train=Flase
+parser.add_argument('-t','--train', dest='train', action='store_true', default=True)    # 未键入--train时，args.train=Flase
 parser.add_argument('-e','--test', dest='test', action='store_true',default=False) # 未键入--test时，args.test=Flase
 parser.add_argument('--seed',dest='seed',default=3407,type=int) # 未键入--seed 123 时，args.seed=3047
 parser.add_argument('-l','--load',dest='load',action='store_true',default=False) # 未键入--seed 123 时，args.seed=3047
@@ -28,8 +28,8 @@ parser.add_argument('-v','--video',dest='video',action='store_true',default=Fals
 args = parser.parse_args()  # 整合到args内
 
 
-ENV_NAME='Pendulum-v1'  # 环境
-# ENV_NAME='BipedalWalker-v3'  # 环境
+# ENV_NAME='Pendulum-v1'  # 环境
+ENV_NAME='BipedalWalker-v3'  # 环境
 # ENV_NAME='BipedalWalkerHardcore-v3'  # 环境
 RANDOMSEED=args.seed   # 随机种子
 
